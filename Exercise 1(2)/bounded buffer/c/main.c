@@ -23,8 +23,11 @@ struct BoundedBuffer* buf_new(int size){
     
     pthread_mutex_init(&buf->mtx, NULL);
     // TODO: initialize semaphores
-    //sem_init(&buf->capacity,      0, /*starting value?*/);
-	//sem_init(&buf->numElements,   0, /*starting value?*/);
+    sem_init(&buf->capacity,      0, size/*starting value?*/);
+    printf("Capasity init: %d\n", buf->capacity);  //initialiserer ikke på riktig verdi, ikke støttet i macOS?
+
+	sem_init(&buf->numElements,   0, 0 /*starting value?*/);
+    
     
     return buf;    
 }
@@ -44,17 +47,48 @@ void buf_push(struct BoundedBuffer* buf, int val){
     // TODO: wait for there to be room in the buffer
     // TODO: make sure there is no concurrent access to the buffer internals
     
+    pthread_mutex_lock(&buf->mtx);
+    
+    printf("Capasity: %d NumElements: %d \n", buf->capacity, buf->numElements);
+        
+    //Må endre capacity og num of elements. Hvis det er på vei til å gå under null vil semaforene vente til den andre har gjort noe!
+    sem_wait(&buf->capacity);
+    buf->capacity--;
+    sem_post(&buf->capacity);
+
+    sem_wait(&buf->numElements);
+    buf->numElements++;
+    sem_post(&buf->numElements);
+
     rb_push(buf->buf, val);
     
-    
-    // TODO: signal that there are new elements in the buffer    
+    // TODO: signal that there are new elements in the buffer 
+    pthread_mutex_unlock(&buf->mtx);   
 }
 
 int buf_pop(struct BoundedBuffer* buf){
     // TODO: same, but different?
+    pthread_mutex_lock(&buf->mtx);
     
-    int val = rb_pop(buf->buf);    
     
+    
+    
+    sem_wait(&buf->capacity);
+    
+    buf->capacity++;
+    sem_post(&buf->capacity);
+
+    sem_wait(&buf->numElements);
+    buf->numElements--;
+    sem_post(&buf->numElements);
+    
+    int val = rb_pop(buf->buf); 
+
+       
+    
+    pthread_mutex_unlock(&buf->mtx);
+
+
     return val;
 }
 
