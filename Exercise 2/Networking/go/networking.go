@@ -7,23 +7,22 @@ import (
 )
 
 func writeToServerUDP() {
-	raddr, err := net.ResolveUDPAddr("udp", "10.100.23.129:20008")
+	raddr, err := net.ResolveUDPAddr("udp", "10.100.23.129:20007")
 
 	conn, err := net.DialUDP("udp", nil, raddr)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
-	defer conn.Close()
-
-	message := []byte("Serriøst har vi brukt fire tima på det herre!?")
+	
+	message := []byte("Per er transe")
 	conn.Write(message)
 
 	defer conn.Close()
 }
 
 func readfromServerUDP() {
-	raddr, err := net.ResolveUDPAddr("udp", ":20008")
+	raddr, err := net.ResolveUDPAddr("udp", ":20007")
 
 	msg, err := net.ListenUDP("udp", raddr)
 	if err != nil {
@@ -38,15 +37,34 @@ func readfromServerUDP() {
 	msg.Read(buffer[0:])
 
 	fmt.Print("From server: ", string(buffer[0:]))
-
-
+	defer msg.Close()
 }
+
+func writeToServerTCP(){
+	addr, err := net.ResolveTCPAddr("tcp", "10.100.23.129:34933")
+
+	conn, err := net.DialTCP("tcp", nil, addr)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	
+
+	message := []byte("Connect to: 10.100.23.18")
+	conn.Write(message)
+	
+
+	conn.Close()
+}
+
+
+
 
 func main() {
 	runtime.GOMAXPROCS(2)
 
-	go writeToServerUDP()
-	go readfromServerUDP()
+	go writeToServerTCP()
+	//go readfromServerTCP()
 
 	select {}
 
