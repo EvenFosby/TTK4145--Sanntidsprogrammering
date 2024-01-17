@@ -32,14 +32,8 @@ struct BoundedBuffer* buf_new(int size){
 
 	sem_init(&buf->numElements,   0, 0 /*starting value?*/);
     
-    
-    return buf;    
-}
+    some shit
 
-void buf_destroy(struct BoundedBuffer* buf){
-    rb_destroy(buf->buf);
-    pthread_mutex_destroy(&buf->mtx);
-    sem_destroy(&buf->numElements);
     sem_destroy(&buf->capacity);
     free(buf);
 }

@@ -34,7 +34,7 @@ void main(string[] args){
         std.getopt.config.passThrough,
         "b|bufsize",    &bufferSize,
         "s|symmetric",  &symmetric,
-    );
+    );dedbuffer
     if(symmetric){
         udpSendPort = udpRecvPort;
     }

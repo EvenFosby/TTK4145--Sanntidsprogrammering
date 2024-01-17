@@ -10,7 +10,7 @@ import (
 
 func incrementing(ch chan bool, finish chan bool) {
     //TODO: increment i 1000000 times
-    for a := 0; a < 1000100; a++{
+    for a := 0; a < 1000000; a++{
         ch<-true
     } 
     finish<-true
