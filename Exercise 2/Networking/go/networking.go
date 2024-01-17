@@ -63,6 +63,26 @@ func writeToServerTCP(){
 	conn.Close()
 }
 
+func readfromServerTCP() {
+	raddr, err := net.ResolveTCPAddr("tcp", ":20007")
+
+	msg, err := net.ListenTCP("tcp", raddr)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	
+
+	buffer := make([]byte, 1024)
+
+	msg.Read(buffer[0:])
+
+	fmt.Print("From server: ", string(buffer[0:]))
+	defer msg.Close()
+}
+
+
 
 
 
@@ -70,7 +90,7 @@ func main() {
 	runtime.GOMAXPROCS(2)
 
 	go writeToServerTCP()
-	//go readfromServerTCP()
+	go readfromServerTCP()
 
 	select {}
 
