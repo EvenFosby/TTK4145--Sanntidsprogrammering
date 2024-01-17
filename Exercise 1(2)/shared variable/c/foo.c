@@ -15,7 +15,7 @@ void* incrementingThreadFunction(){
         pthread_mutex_lock(&mutex);
         i++;
         pthread_mutex_unlock(&mutex);
-        printf("The magic number is: %d\n", i);
+        //printf("The magic number is: %d\n", i);
 
     }    
     return NULL;
@@ -27,7 +27,7 @@ void* decrementingThreadFunction(){
         pthread_mutex_lock(&mutex);
         i--;
         pthread_mutex_unlock(&mutex);
-        printf("The magic number is: %d\n", i);
+        //printf("The magic number is: %d\n", i);
 
     } 
     return NULL;
