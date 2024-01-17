@@ -50,8 +50,14 @@ func writeToServerTCP(){
 	}
 	
 
-	message := []byte("Connect to: 10.100.23.18")
+	message := []byte("Connect to: 10.100.23.18:34933")
 	conn.Write(message)
+
+	message2 := []byte("TCP test 8")
+	conn.Write(message2)
+	
+
+
 	
 
 	conn.Close()
