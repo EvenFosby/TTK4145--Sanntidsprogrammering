@@ -6,8 +6,7 @@ import (
 	"runtime"
 )
 
-
-func writeToServer(){
+func writeToServerUDP() {
 	raddr, err := net.ResolveUDPAddr("udp", "10.100.23.129:20008")
 
 	conn, err := net.DialUDP("udp", nil, raddr)
@@ -23,9 +22,8 @@ func writeToServer(){
 	defer conn.Close()
 }
 
-
-func readfromServer() {
-	raddr, err := net.ResolveUDPAddr("udp", "10.100.23.129:20008")
+func readfromServerUDP() {
+	raddr, err := net.ResolveUDPAddr("udp", ":20008")
 
 	msg, err := net.ListenUDP("udp", raddr)
 	if err != nil {
@@ -33,22 +31,23 @@ func readfromServer() {
 		return
 	}
 
+	
+
 	buffer := make([]byte, 1024)
 
 	msg.Read(buffer[0:])
 
 	fmt.Print("From server: ", string(buffer[0:]))
 
+
 }
 
 func main() {
 	runtime.GOMAXPROCS(2)
 
-	go writeToServer()
-	go readfromServer()
-	
+	go writeToServerUDP()
+	go readfromServerUDP()
+
+	select {}
 
 }
-	
-
-
