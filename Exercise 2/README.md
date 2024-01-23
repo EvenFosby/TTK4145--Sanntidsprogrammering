@@ -94,23 +94,34 @@ Master burde ha en oversikt over alle bestillinger osv. til hver node (heis), og
 Bruker watchdog timer, masteren vil vente en liten periode og sjekker om noden kommer tilbake, og da beordre den til å fortsette der den slapp. Dersom den ikke får tilbakemelding om at den er tilbake, vil den gi oppgavene til de andre heisene.
 
    - What should happen if some unforeseen event causes the elevator to never reach its destination, but communication remains intact?
-Resette på noe vis, tidsbegrensning.
+Resette på noe vis, tidsbegrensning. Eventuelt overføre ordre til annen node hvis reset ikke går.
    
  - Guarantees about orders:
    - Do all your nodes need to "agree" on a call for it to be accepted? In that case, how is a faulty node handled?
-
+No, we will use a master who decides orders. The nodes will have to accept a order and confirm what it is. If confirmation is wrong/non-existant reset/reordering procedures will be activated.
+ 
    - How can you be sure that a remote node "agrees" on a call?
+  The nodes will have to accept a order and confirm what it is. If confirmation is wrong/non-existant reset/reordering procedures will be activated.
+   
    - How do you handle losing packets between the nodes?
+Nodes and master need to handshake and confirm that they have the same order. If not try again.
+   
    - Do you share the entire state of the current calls, or just the changes as they occur?
+  
      - For either one: What should happen when an elevator re-joins after having been offline?
+       If the elevator is offline for so long that all orders are redirected to other nodes it will start "again". 
 
 Pencil and paper is encouraged! Drawing a diagram/graph of the message pathways between nodes (elevators) will aid in visualizing complexity. Drawing the order of messages through time will let you more easily see what happens when communication fails.
      
  - Topology:
    - What kind of network topology do you want to implement? Peer to peer? Master slave? Circle? Something else?
+   We plan to implement a master slave topology. 
    - In the case of a master-slave configuration: Do you have only one program, or two (a "master" executable and a "slave")?
+     We plan to have two separate programs where the slave is the backup for the master.
      - How do you handle a master node disconnecting?
+     If the master disconnects the slave will become the new master.
      - Is a slave becoming a master a part of the network module?
+     Yes, it must be
    - In the case of a peer-to-peer configuration:
      - Who decides the order assignment?
      - What happens if someone presses the same button on two panels at once? Is this even a problem?
@@ -119,14 +130,22 @@ Pencil and paper is encouraged! Drawing a diagram/graph of the message pathways 
    - Protocols: TCP, UDP, or something else?
       - If you are using TCP: How do you know who connects to who?
         - Do you need an initialization phase to set up all the connections?
+        It seems like you need to connect and accept all connections
       - If you are using UDP broadcast: How do you differentiate between messages from different nodes?
+        You can see through which port is used, if not add a id to the messages. 
       - If you are using a library or language feature to do the heavy lifting - what is it, and does it satisfy your needs?
+        We plan to use go with the .net library. It seems like this will make things easier and satisify thomaz. 
    - Do you want to build the necessary reliability into the module, or handle that at a higher level?
+     We want to implement in network module, seems logical, but dont really know why. How could it be implementend at higher level?
    - Is detection (and handling) of things like lost messages or lost nodes a part of the network module?
+     Maybe?? it could be smart to have an own module for this and let the network module only handle sending/recieving. 
    - How will you pack and unpack (serialize) data?
      - Do you use structs, classes, tuples, lists, ...?
      - JSON, XML, plain strings, or just plain memcpy?
+    Dunno
+  
      - Is serialization a part of the network module?
+       Yes that seem logical
 
 2.2: Getting networking started
 -------------------------------
