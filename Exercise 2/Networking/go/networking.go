@@ -41,7 +41,7 @@ func readfromServerUDP() {
 }
 
 func writeToServerTCP(){
-	addr, err := net.ResolveTCPAddr("tcp", "10.100.23.129:34933")
+	addr, err := net.ResolveTCPAddr("tcp", "10.100.23.129:34933") //change port to 33546 for \0 messages
 
 	conn, err := net.DialTCP("tcp", nil, addr)
 	if err != nil {
@@ -50,7 +50,7 @@ func writeToServerTCP(){
 	}
 	
 
-	message := []byte("Connect to: 10.100.23.18:34933")
+	message := []byte("Connect to: 10.100.23.18:34933") //change port to 33546 for \0 messages
 	conn.Write(message)
 
 	message2 := []byte("TCP test 8")
