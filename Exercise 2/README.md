@@ -88,12 +88,18 @@ Before proceeding with any code related to a network module, think about how you
 
  - Guarantees about elevators:
    - What should happen if one of the nodes loses its network connection?
+Master burde ha en oversikt over alle bestillinger osv. til hver node (heis), og slik kan den dirigere de andre heisene til å ta over  bestillinger som tilhørte den sviktende heisen. Vi brude også ha en backup master som tar over dersom det er masteren selv som mister tilkoplingen til nettverket.
+     
    - What should happen if one of the nodes loses power for a brief moment?
+Bruker watchdog timer, masteren vil vente en liten periode og sjekker om noden kommer tilbake, og da beordre den til å fortsette der den slapp. Dersom den ikke får tilbakemelding om at den er tilbake, vil den gi oppgavene til de andre heisene.
+
    - What should happen if some unforeseen event causes the elevator to never reach its destination, but communication remains intact?
+Resette på noe vis, tidsbegrensning.
    
  - Guarantees about orders:
-   - Do all your nodes need to "agree" on a call for it to be accepted? In that case, how is a faulty node handled? 
-   - How can you be sure that a remote node "agrees" on an call?
+   - Do all your nodes need to "agree" on a call for it to be accepted? In that case, how is a faulty node handled?
+
+   - How can you be sure that a remote node "agrees" on a call?
    - How do you handle losing packets between the nodes?
    - Do you share the entire state of the current calls, or just the changes as they occur?
      - For either one: What should happen when an elevator re-joins after having been offline?
