@@ -17,7 +17,7 @@ func writeToServerTCP() {
 	defer conn.Close()
 
 	// Send "Connect to" message to the server
-	//connectMessage := "Connect to: 10.100.23.186:" + delimitedMessagesPort + "\000"
+	//connectMessage := "Connect to: 10.100.23.186:" + delimitedMessagesPort + "\000" 
 	//conn.Write([]byte(connectMessage))
 
 	// Send data to the server ending with '\000'
