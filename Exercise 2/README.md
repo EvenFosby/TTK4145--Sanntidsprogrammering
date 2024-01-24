@@ -109,7 +109,7 @@ Nodes and master need to handshake and confirm that they have the same order. If
    - Do you share the entire state of the current calls, or just the changes as they occur?
   
      - For either one: What should happen when an elevator re-joins after having been offline?
-       If the elevator is offline for so long that all orders are redirected to other nodes it will start "again". 
+       If the elevator is offline for so long that all 34933orders are redirected to other nodes it will start "again". 
 
 Pencil and paper is encouraged! Drawing a diagram/graph of the message pathways between nodes (elevators) will aid in visualizing complexity. Drawing the order of messages through time will let you more easily see what happens when communication fails.
      
@@ -145,7 +145,7 @@ Pencil and paper is encouraged! Drawing a diagram/graph of the message pathways 
     Dunno
   
      - Is serialization a part of the network module?
-       Yes that seem logical
+       Yes that seems logical
 
 2.2: Getting networking started
 -------------------------------

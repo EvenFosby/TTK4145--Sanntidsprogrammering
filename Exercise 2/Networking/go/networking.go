@@ -7,7 +7,7 @@ import (
 )
 
 func writeToServerUDP() {
-	raddr, err := net.ResolveUDPAddr("udp", "10.100.23.129:20007")
+	raddr, err := net.ResolveUDPAddr("udp", "10.100.23.186:20007")
 
 	conn, err := net.DialUDP("udp", nil, raddr)
 	if err != nil {
@@ -15,7 +15,7 @@ func writeToServerUDP() {
 		return
 	}
 	
-	message := []byte("Per er transe")
+	message := []byte("Test group 8")
 	conn.Write(message)
 
 	defer conn.Close()
@@ -41,7 +41,7 @@ func readfromServerUDP() {
 }
 
 func writeToServerTCP(){
-	addr, err := net.ResolveTCPAddr("tcp", "10.100.23.129:34933") //change port to 33546 for \0 messages
+	addr, err := net.ResolveTCPAddr("tcp", "10.100.23.186:33546") //change port to 33546 for \0 messages
 
 	conn, err := net.DialTCP("tcp", nil, addr)
 	if err != nil {
@@ -50,11 +50,11 @@ func writeToServerTCP(){
 	}
 	
 
-	message := []byte("Connect to: 10.100.23.18:34933") //change port to 33546 for \0 messages
+	message := []byte("Connect to: 10.100.23.18:33546\000") //change port to 33546 for \0 messages
 	conn.Write(message)
 
-	message2 := []byte("TCP test 8")
-	conn.Write(message2)
+	//message2 := []byte("TCP test 8\000")
+	//conn.Write(message2)
 	
 
 
@@ -64,8 +64,7 @@ func writeToServerTCP(){
 }
 
 func readfromServerTCP() {
-	raddr, err := net.ResolveTCPAddr("tcp", ":20007")
-
+	raddr, err := net.ResolveTCPAddr("tcp", "10.100.23.186:34933") 
 	msg, err := net.ListenTCP("tcp", raddr)
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -76,7 +75,7 @@ func readfromServerTCP() {
 
 	buffer := make([]byte, 1024)
 
-	msg.Read(buffer[0:])
+	//msg.Read(buffer[0:])
 
 	fmt.Print("From server: ", string(buffer[0:]))
 	defer msg.Close()
@@ -90,7 +89,7 @@ func main() {
 	runtime.GOMAXPROCS(2)
 
 	go writeToServerTCP()
-	go readfromServerTCP()
+	//go readfromServerTCP()
 
 	select {}
 
